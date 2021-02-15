@@ -12,6 +12,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -79,6 +80,11 @@ public class ParserUtil {
         return new Email(trimmedEmail);
     }
 
+    public static Remark parseRemark(String remark) throws ParseException {
+      requireNonNull(remark);
+      String trimmedRemark = remark.trim();
+      return new Remark(trimmedRemark);
+    }
     /**
      * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.

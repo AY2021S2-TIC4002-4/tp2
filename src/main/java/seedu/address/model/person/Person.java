@@ -19,18 +19,19 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
-
+    private final Remark remark;
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Remark remark, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.remark = remark;
         this.tags.addAll(tags);
     }
 
@@ -46,6 +47,9 @@ public class Person {
         return email;
     }
 
+    public Remark getRemark(){
+        return remark;
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
