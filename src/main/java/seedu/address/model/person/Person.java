@@ -7,10 +7,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.model.person.appointment.Appointment;
+import seedu.address.model.person.medical.MedicalHistory;
 import seedu.address.model.tag.Tag;
 
 /**
- * Represents a Person in the address book.
+ * Represents a Person in the patient book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
@@ -21,17 +23,23 @@ public class Person {
     private final Email email;
 
     // Data fields
+    private final Address address;
     private final Set<Tag> tags = new HashSet<>();
+    private Set<Appointment> appointments = new HashSet<>();
+    private Set<MedicalHistory> medicalHistories = new HashSet<>();
 
+    private boolean viewAppInd = false;
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, tags);
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Set<Appointment> appointments) {
+        requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.address = address;
         this.tags.addAll(tags);
+        this.appointments.addAll(appointments);
     }
 
     public Name getName() {
@@ -46,6 +54,33 @@ public class Person {
         return email;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public boolean isViewAppInd() {
+        return viewAppInd;
+    }
+
+    public void setViewAppInd(boolean viewAppInd) {
+        this.viewAppInd = viewAppInd;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public Set<MedicalHistory> getMedicalHistories() {
+        return medicalHistories;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public void setMedicalHistories(Set<MedicalHistory> medicalHistories) {
+        this.medicalHistories = medicalHistories;
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
@@ -53,6 +88,14 @@ public class Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Appointment> getAppointment() {
+        return Collections.unmodifiableSet(appointments);
     }
 
     /**
@@ -86,13 +129,14 @@ public class Person {
         return otherPerson.getName().equals(getName())
                 && otherPerson.getPhone().equals(getPhone())
                 && otherPerson.getEmail().equals(getEmail())
+                && otherPerson.getAddress().equals(getAddress())
                 && otherPerson.getTags().equals(getTags());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, tags);
+        return Objects.hash(name, phone, email, address, tags, appointments);
     }
 
     @Override
@@ -103,14 +147,21 @@ public class Person {
                 .append(getPhone())
                 .append("; Email: ")
                 .append(getEmail())
-                .append("; Address: ");
+                .append("; Address: ")
+                .append(getAddress());
 
         Set<Tag> tags = getTags();
         if (!tags.isEmpty()) {
             builder.append("; Tags: ");
             tags.forEach(builder::append);
         }
+
+        Set<Appointment> appointments = getAppointment();
+        if (!appointments.isEmpty()) {
+            builder.append("; Appointments: ");
+            appointments.forEach(builder::append);
+        }
+
         return builder.toString();
     }
-
 }
